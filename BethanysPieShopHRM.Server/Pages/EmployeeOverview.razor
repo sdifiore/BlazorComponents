@@ -22,7 +22,7 @@ else
         <tbody>
             @foreach (var employee in Employees)
             {
-                <EmployeeRow Employee="employee"></EmployeeRow>
+                <EmployeeRow @key="employee" Employee="employee"></EmployeeRow>
             }
         </tbody>
     </table>

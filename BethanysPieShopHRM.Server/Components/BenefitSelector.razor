@@ -15,7 +15,9 @@ else
                 </tr>
                 @foreach (var benefit in Benefits)
                 {
-                    <tr>@benefit.Description</tr>
+                    <tr @key="benefit">
+                        <td>@benefit.Description</td>
+                    </tr>
                 }
             </table>
         </div>
