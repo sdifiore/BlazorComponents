@@ -1,0 +1,23 @@
+﻿@inherits BenefitSelectorBase
+
+@if (Benefits == null)
+{
+    <p><em>Loading...</em></p>
+}
+
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-sm">
+                <tr>
+                    <th class="w-auto">Benefit</th>
+                </tr>
+                @foreach (var benefit in Benefits)
+                {
+                    <tr>@benefit.Description</tr>
+                }
+            </table>
+        </div>
+    </div>
+}
