@@ -11,5 +11,10 @@ namespace BethanysPieShopHRM.Server.Components
     {
         [Parameter]
         public EmployeeModel Employee { get; set; }
+
+        public void PremiumToggle(bool premiumBenefit)
+        {
+            Employee.HasPremiumBenefits = premiumBenefit;
+        }
     }
 }

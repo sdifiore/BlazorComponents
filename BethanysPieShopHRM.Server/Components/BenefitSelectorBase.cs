@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BethanysPieShopHRM.Server.Services;
 using BethanysPieShopHRM.Shared;
@@ -15,6 +16,9 @@ namespace BethanysPieShopHRM.Server.Components
         [Parameter]
         public EmployeeModel Employee { get; set; }
 
+        [Parameter]
+        public EventCallback<bool> OnPremiumToggle { get; set; }
+
         protected IEnumerable<BenefitModel> Benefits { get; set; }
 
         protected bool SaveButtonDisabled { get; set; } = true;
@@ -24,7 +28,7 @@ namespace BethanysPieShopHRM.Server.Components
             Benefits = await BenefitDataService.GetForEmployee(Employee);
         }
 
-        public void CheckBoxChanged(ChangeEventArgs e, BenefitModel benefit)
+        public async Task CheckBoxChanged(ChangeEventArgs e, BenefitModel benefit)
         {
             var newValue = (bool)e.Value;
             benefit.Selected = newValue;
@@ -35,6 +39,8 @@ namespace BethanysPieShopHRM.Server.Components
                 benefit.StartDate = DateTime.Now;
                 benefit.EndDate = DateTime.Now.AddYears(1);
             }
+
+            await OnPremiumToggle.InvokeAsync(Benefits.Any(b => b.Premium && b.Selected));
         }
 
         public void SaveClick()
