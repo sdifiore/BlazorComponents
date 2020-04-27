@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BethanysPieShopHRM.Server.Services;
 using BethanysPieShopHRM.Shared;
@@ -16,9 +17,30 @@ namespace BethanysPieShopHRM.Server.Components
 
         protected IEnumerable<BenefitModel> Benefits { get; set; }
 
+        protected bool SaveButtonDisabled { get; set; } = true;
+
         protected async override Task OnInitializedAsync()
         {
             Benefits = await BenefitDataService.GetForEmployee(Employee);
+        }
+
+        public void CheckBoxChanged(ChangeEventArgs e, BenefitModel benefit)
+        {
+            var newValue = (bool)e.Value;
+            benefit.Selected = newValue;
+            SaveButtonDisabled = false;
+
+            if (newValue)
+            {
+                benefit.StartDate = DateTime.Now;
+                benefit.EndDate = DateTime.Now.AddYears(1);
+            }
+        }
+
+        public void SaveClick()
+        {
+            BenefitDataService.UpdateForEmployee(Employee, Benefits);
+            SaveButtonDisabled = true;
         }
 
         protected override Task OnParametersSetAsync()
